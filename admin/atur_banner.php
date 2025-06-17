@@ -5,9 +5,96 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Ambil semua banner dari database
+// === PROSES UPLOAD BANNER BARU ===
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["banner"])) {
+    $target_dir = "../assets/banners/";
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0755, true); // Buat folder jika belum ada
+    }
+
+    $filename = basename($_FILES["banner"]["name"]);
+    $target_file = $target_dir . $filename;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $allowed_types = ["jpg", "jpeg", "png", "gif", "webp"];
+
+    if (!in_array($imageFileType, $allowed_types)) {
+        header("Location: atur_banner.php?error=format");
+        exit();
+    }
+
+    if (move_uploaded_file($_FILES["banner"]["tmp_name"], $target_file)) {
+        $stmt = $conn->prepare("INSERT INTO banners (filename) VALUES (?)");
+        $stmt->bind_param("s", $filename);
+        $stmt->execute();
+        $stmt->close();
+        header("Location: atur_banner.php?success=1");
+        exit;
+    } else {
+        header("Location: atur_banner.php?error=1");
+        exit;
+    }
+}
+
+// === PROSES GANTI BANNER ===
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["new_banner"])) {
+    $id = $_POST['id'];
+
+    $result = $conn->query("SELECT filename FROM banners WHERE id = $id");
+    $old = $result->fetch_assoc();
+    $old_file = $old['filename'];
+
+    $target_dir = "../assets/banners/";
+    $new_name = basename($_FILES["new_banner"]["name"]);
+    $target_file = $target_dir . $new_name;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $allowed_types = ["jpg", "jpeg", "png", "gif", "webp"];
+
+    if (!in_array($imageFileType, $allowed_types)) {
+        header("Location: atur_banner.php?error=format");
+        exit();
+    }
+
+    if (move_uploaded_file($_FILES["new_banner"]["tmp_name"], $target_file)) {
+        if (file_exists($target_dir . $old_file)) {
+            unlink($target_dir . $old_file);
+        }
+
+        $stmt = $conn->prepare("UPDATE banners SET filename = ?, uploaded_at = NOW() WHERE id = ?");
+        $stmt->bind_param("si", $new_name, $id);
+        $stmt->execute();
+        $stmt->close();
+
+        header("Location: atur_banner.php?success=edit");
+        exit();
+    } else {
+        header("Location: atur_banner.php?error=upload");
+        exit();
+    }
+}
+
+// === PROSES HAPUS BANNER ===
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['filename']) && !isset($_FILES["banner"]) && !isset($_FILES["new_banner"])) {
+    $id = $_POST['id'];
+    $filename = $_POST['filename'];
+    $filepath = "../assets/banners/" . $filename;
+
+    $stmt = $conn->prepare("DELETE FROM banners WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    if (file_exists($filepath)) {
+        unlink($filepath);
+    }
+
+    header("Location: atur_banner.php?deleted=1");
+    exit();
+}
+
+// === TAMPILAN HTML + AMBIL DATA ===
 $result = $conn->query("SELECT * FROM banners ORDER BY uploaded_at DESC");
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -38,7 +125,7 @@ $result = $conn->query("SELECT * FROM banners ORDER BY uploaded_at DESC");
   <p class="text-red-400 font-semibold mb-4">❌ Gagal mengunggah banner.</p>
 <?php endif; ?>
 
-    <form action="upload_banner.php" method="POST" enctype="multipart/form-data">
+    <form action="atur_banner.php" method="POST" enctype="multipart/form-data">
       <label class="block mb-2 font-semibold">Pilih Gambar Banner:</label>
       <input type="file" name="banner" accept="image/*" required class="block w-full mb-4 p-2 rounded text-black">
       <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-bold">
@@ -56,14 +143,14 @@ $result = $conn->query("SELECT * FROM banners ORDER BY uploaded_at DESC");
             <p class="text-sm text-gray-300 mb-2">Diunggah: <?= $row['uploaded_at'] ?></p>
 
             <!-- Tombol Ganti -->
-            <form action="edit_banner.php" method="POST" enctype="multipart/form-data" class="mb-2">
+            <form action="atur_banner.php" method="POST" enctype="multipart/form-data" class="mb-2">
             <input type="hidden" name="id" value="<?= $row['id'] ?>">
             <input type="file" name="new_banner" required accept="image/*" class="block w-full text-sm mb-2 text-black p-1 rounded">
             <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-1 px-3 rounded">✏️ Ganti Banner</button>
             </form>
 
             <!-- Tombol Hapus -->
-            <form action="hapus_banner.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus banner ini?')">
+            <form action="atur_banner.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus banner ini?')">
             <input type="hidden" name="id" value="<?= $row['id'] ?>">
             <input type="hidden" name="filename" value="<?= $row['filename'] ?>">
             <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">🗑️ Hapus</button>
