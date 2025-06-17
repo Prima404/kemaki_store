@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kemakiStore - Admin Harga UC PUBG</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+  <!-- Notifikasi -->
+  <div id="notif" class="fixed top-5 right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg hidden transition-opacity duration-500 z-50">
+  Harga berhasil diperbarui!
+  </div>
+
+  <!-- Header -->
+  <header class="p-4 bg-gray-800 flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="topupadmin.php">
+        <img src="../assets/logokemakistore.png" alt="kemakiStore Logo" class="h-14 w-auto" />
+      </a>
+    </div>
+  </header>
+
+  <!-- Konten utama -->
+  <div class="p-6">
+    <h1 class="text-3xl font-bold mb-4">kemakiStore</h1>
+
+    <!-- Banner -->
+    <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/banner_game_pubg.jpg');">
+      <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center px-6">
+        <div class="relative flex items-center space-x-3 p-6 rounded-lg"
+        style="background-image: url('../assets/banner_game_pubg.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
+          <img src="../assets/logoPUBG.png" alt="PUBG Mobile" class="w-12 h-12 rounded bg-white" />
+          <div>
+            <h2 class="text-2xl font-bold text-white">PUBG Mobile ID</h2>
+            <p class="text-sm text-white">Tencent Games</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Informasi -->
+    <div class="bg-gray-800 p-4 rounded-xl mb-6">
+      <h2 class="text-xl font-semibold mb-2">Informasi Game/Aplikasi</h2>
+      <p>Top Up <strong>PUBG Mobile</strong> Cepat & Aman – Langsung Masuk, Tanpa Ribet!</p>
+      <p class="text-sm text-gray-400 mt-2">Mendukung pembayaran GOPAY, OVO, DANA, ShopeePay, BCA, Mandiri, dll.</p>
+    </div>
+
+    <!-- Denom -->
+    <div>
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-xl font-semibold">2. Pilih Jumlah Denom</h2>
+        <button onclick="addDenom()" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded">+ Tambah Denom</button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="diamond-grid">
+        <!-- Diisi oleh JavaScript -->
+      </div>
+    </div>      
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-gray-800 text-white rounded-lg p-6 w-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <h3 class="text-lg font-semibold mb-2" id="modal-title"></h3>
+      
+      <label class="text-sm mb-1 block">Jumlah UC</label>
+      <input type="text" id="label-input" class="border border-gray-300 w-full p-2 rounded mb-4 bg-gray-900 text-white" placeholder="Contoh: 86 DM">
+
+      <label class="text-sm mb-1 block">Harga</label>
+      <input type="text" id="price-input" class="border border-gray-300 w-full p-2 rounded mb-4 bg-gray-900 text-white" placeholder="Masukkan harga baru">
+      
+      <div class="flex justify-end gap-2">
+        <div class="flex justify-between gap-2 items-center">
+          <button id="delete-btn" onclick="deleteDenom()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500">🗑 Hapus</button>
+          <div class="flex gap-2">
+            <button onclick="closeModal()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-400">Batal</button>
+            <button onclick="savePrice()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    let selectedCard = null;
+  
+    function loadDenoms() {
+      fetch('update_pubgm.php')
+      .then(response => response.json())
+      .then(denomData => {
+        const grid = document.getElementById('diamond-grid');
+        grid.innerHTML = '';
+
+        denomData.forEach((d) => {
+          const div = document.createElement('div');
+          div.className = 'bg-gray-800 hover:bg-gray-700 p-4 rounded-xl cursor-pointer flex flex-col gap-2';
+          div.onclick = () => editDenom(div, d.label);
+          div.innerHTML = `
+            <div class="flex items-center gap-2">
+              <img src="../assets/ucpubgm.png" alt="Diamond" class="w-5 h-5">
+              <h3 class="font-bold">${d.label} UC</h3>
+            </div>
+            <p class="text-sm text-orange-400 font-semibold" data-price>IDR ${Number(d.price).toLocaleString('id-ID')}</p>
+          `;
+          grid.appendChild(div);
+        });
+      })
+      .catch(error => {
+        console.error("Gagal mengambil data dari database:", error);
+      });
+    }
+
+    window.onload = loadDenoms;
+  
+    function editDenom(card, label) {
+      selectedCard = card;
+      document.getElementById("modal-title").innerText = `Edit Denom & Harga`;
+
+      const priceText = card.querySelector("[data-price]").innerText;
+      document.getElementById("label-input").value = label;
+      document.getElementById("price-input").value = priceText.replace(/IDR\s?|\./g, '');
+      document.getElementById("delete-btn").classList.remove("hidden");
+      document.getElementById("modal").classList.remove("hidden");
+    }
+  
+    function closeModal() {
+      document.getElementById("modal").classList.add("hidden");
+    }
+  
+    function savePrice() {
+      const newPrice = document.getElementById("price-input").value.trim();
+      const newLabel = document.getElementById("label-input").value.trim();
+
+      if (!/^\d+(\.\d{1,2})?$/.test(newPrice)) {
+        alert("Masukkan hanya angka harga yang valid");
+        return;
+      }
+
+      // Tambah Denom
+      if (!selectedCard && newLabel && newPrice) {
+        fetch('update_pubgm.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `aksi=tambah&label_baru=${encodeURIComponent(newLabel)}&harga=${encodeURIComponent(newPrice)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            closeModal();
+            showNotification("Denom baru berhasil ditambahkan!");
+            loadDenoms();
+          } else {
+            alert("Gagal menambahkan: " + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat menambahkan data.");
+        });
+        return;
+      }
+
+      // Edit Denom
+      const oldLabel = selectedCard?.querySelector("h3").innerText.replace(" UC", "").trim();
+
+      if (selectedCard && newLabel && newPrice) {
+        fetch('update_pubgm.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `label_lama=${encodeURIComponent(oldLabel)}&label_baru=${encodeURIComponent(newLabel)}&harga=${encodeURIComponent(newPrice)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            selectedCard.querySelector("h3").innerText = newLabel;
+            selectedCard.querySelector("[data-price]").innerText = `IDR ${Number(newPrice).toLocaleString('id-ID')}`;
+            closeModal();
+            showNotification("Data berhasil diperbarui!");
+          } else {
+            alert("Gagal update: " + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat mengirim data.");
+        });
+      }
+    }
+
+    function showNotification(message) {
+      const notif = document.getElementById("notif");
+      notif.innerText = message;
+      notif.classList.remove("hidden");
+      notif.style.opacity = "1";
+
+      setTimeout(() => {
+        notif.style.opacity = "0";
+        setTimeout(() => {
+          notif.classList.add("hidden");
+        }, 500);
+      }, 2500);
+    }
+
+    function addDenom() {
+      selectedCard = null;
+      document.getElementById("modal-title").innerText = "Tambah Denom Baru";
+      document.getElementById("label-input").value = "";
+      document.getElementById("price-input").value = "";
+      document.getElementById("delete-btn").classList.add("hidden");
+      document.getElementById("modal").classList.remove("hidden");
+    }
+
+    function deleteDenom() {
+      const label = document.getElementById("label-input").value.trim();
+
+      if (confirm(`Hapus denom "${label}"?`)) {
+        fetch('update_pubgm.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `hapus=1&label=${encodeURIComponent(label)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            selectedCard.remove();
+            closeModal();
+            showNotification("Denom berhasil dihapus!");
+          } else {
+            alert("Gagal hapus: " + data.message);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Terjadi kesalahan saat menghapus.");
+        });
+      }
+    }
+    window.onload = loadDenoms;
+  </script>
+</body>
+</html>

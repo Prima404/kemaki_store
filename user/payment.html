@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Pembayaran - kemakiStore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+  <!-- Header -->
+  <header class="p-4 bg-gray-800 flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="topupuser.php">
+        <img src="../assets/logokemakistore.png" alt="kemakiStore Logo" class="h-14 w-auto" />
+      </a>
+    </div>
+  </header>
+
+  <div class="min-h-screen flex flex-col md:flex-row p-6 space-y-6 md:space-y-0 md:space-x-6">
+    
+    <!-- Gambar QR (1/3 halaman) -->
+    <div class="md:w-1/3 flex justify-center items-center">
+      <img src="../assets/qris.png" alt="QRIS" class="max-w-xs rounded shadow" />
+    </div>
+
+    <!-- Detail Transaksi (2/3 halaman) -->
+    <div class="md:w-2/3 bg-gray-800 p-6 rounded-lg">
+      <h2 class="text-xl font-bold mb-4">Detail Transaksi</h2>
+      <div class="space-y-2">
+        <p><strong>No. Transaksi:</strong> <span id="trxId"></span></p>
+        <p><strong>Status:</strong> <span class="text-yellow-400">PENDING</span></p>
+        <p><strong>Jumlah Diamond:</strong> <span id="denomName"></span></p>
+        <p><strong>Total Bayar:</strong> <span id="totalBayar"></span></p>
+        <p><strong>Waktu Pemesanan:</strong> <span id="waktuPesan"></span></p>
+        <p><strong>Metode Pembayaran:</strong> <span id="metode"></span></p>
+
+        <!-- Tambahan: Data user -->
+        <p><strong>Nama Game:</strong> <span id="gameName"></span></p>
+        <p><strong>User ID:</strong> <span id="userId"></span></p>
+        <p><strong>Server ID:</strong> <span id="serverId"></span></p>
+        <p><strong>Nickname:</strong> <span id="nickname"></span></p>
+        <p><strong>No. WhatsApp:</strong> <span id="waNumber"></span></p>
+
+        <p class="text-sm text-gray-300 mt-4">Jika belum menerima produk dalam 30 menit setelah pembayaran, segera hubungi kami.</p>
+      </div>
+
+      <!-- Tombol Selesai dan Batal -->
+      <div class="mt-6 text-right flex justify-end space-x-4">
+        <!-- Tombol Batal -->
+        <button id="btnCancel" type="button" class="bg-red-600 px-6 py-2 rounded hover:bg-red-700 transition">
+          Batal
+        </button>
+
+        <!-- Tombol Selesai -->
+        <form action="payment.php" method="POST">
+          <input type="hidden" name="trx" id="inputTrx">
+          <input type="hidden" name="denom" id="inputDenom">
+          <input type="hidden" name="price" id="inputPrice">
+          <input type="hidden" name="method" id="inputMethod">
+          <input type="hidden" name="user" id="inputUser">
+          <input type="hidden" name="server" id="inputServer">
+          <input type="hidden" name="nick" id="inputNick">
+          <input type="hidden" name="wa" id="inputWa">
+          <input type="hidden" name="game" id="inputGame">
+          <input type="hidden" name="time" id="inputTime">
+
+          <button type="submit" class="bg-green-600 px-6 py-2 rounded hover:bg-green-700 transition">
+            Selesai
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('trxId').textContent = params.get('trx');
+    document.getElementById('denomName').textContent = params.get('denom');
+    document.getElementById('totalBayar').textContent = params.get('price');
+    document.getElementById('metode').textContent = params.get('method');
+    document.getElementById('userId').textContent = params.get('user');
+    document.getElementById('serverId').textContent = params.get('server');
+    document.getElementById('nickname').textContent = params.get('nick');
+    document.getElementById('waNumber').textContent = params.get('wa');
+    document.getElementById('gameName').textContent = params.get('game');
+
+    const now = new Date();
+
+    // Format tanggal & waktu menjadi format DATETIME MySQL: "YYYY-MM-DD HH:MM:SS"
+    const pad = n => n.toString().padStart(2, '0');
+    const formattedDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    // Tampilkan ke user dengan format lebih mudah dibaca
+    document.getElementById('waktuPesan').textContent = formattedDateTime + " WIB";
+    // Simpan ke input hidden
+    document.getElementById('inputTime').value = formattedDateTime;
+
+    // Isi form hidden input
+    document.getElementById('inputTrx').value = params.get('trx');
+    document.getElementById('inputDenom').value = params.get('denom');
+    document.getElementById('inputPrice').value = params.get('price');
+    document.getElementById('inputMethod').value = params.get('method');
+    document.getElementById('inputUser').value = params.get('user');
+    document.getElementById('inputServer').value = params.get('server');
+    document.getElementById('inputNick').value = params.get('nick');
+    document.getElementById('inputWa').value = params.get('wa');
+    document.getElementById('inputGame').value = params.get('game');
+    document.getElementById('inputTime').value = formattedDateTime;
+
+    // Tombol batal transaksi: redirect sesuai game
+    document.getElementById("btnCancel").addEventListener("click", function () {
+      const game = params.get('game');
+
+      let redirectUrl = "#"; // Default (fallback)
+
+      if (game === "Mobile Legends: Bang Bang") {
+        redirectUrl = "mlbb.html";
+      } else if (game === "PUBG Mobile") {
+        redirectUrl = "pubgm.html";
+      } else if (game === "FreeFire") {
+        redirectUrl = "freefire.html";
+      }
+
+      window.location.href = redirectUrl;
+    });
+
+  </script>
+</body>
+</html>
