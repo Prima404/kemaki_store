@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Up Call of Duty: Mobile - kemakiStore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Header -->
+  <header class="p-4 bg-gray-800 flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="topupuser.php">
+        <img src="../assets/logokemakistore.png" alt="kemakiStore Logo" class="h-14 w-auto" />
+      </a>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/banner_codm.jpg');">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center px-6">
+      <div class="relative flex items-center space-x-3 p-6 rounded-lg"
+        style="background-image: url('../assets/banner_codm.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
+        <img src="../assets/logoCODM.png" alt="Call of Duty Mobile" class="w-12 h-12 rounded bg-white" />
+        <div>
+          <h2 class="text-2xl font-bold text-white">Call of Duty: Mobile</h2>
+          <p class="text-sm text-white">Garena / Activision</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Informasi Game -->
+  <section class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-gray-800 p-4 rounded-lg">
+      <h3 class="text-lg font-semibold mb-2">Informasi Game/Aplikasi</h3>
+      <p class="text-sm text-gray-300">
+        Top Up <strong>CODM</strong> Cepat & Terpercaya – Harga Terbaik, CP Langsung Masuk ke Akun!
+      </p>
+      <p class="text-sm text-gray-400 mt-2">
+        Mendukung pembayaran GOPAY, OVO, DANA, ShopeePay.
+      </p>
+    </div>
+
+    <!-- Kolom Kanan: Form Input -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">1. MASUKKAN ID, SERVER, DAN NOMOR WHATSAPP</h3>
+      <div class="flex flex-col space-y-2">
+        <div class="flex space-x-2">
+          <input type="text" id="userID" placeholder="User ID" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+          <input type="text" id="serverID" placeholder="Server" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+        </div>
+        <div>
+          <input type="text" id="waNumber" placeholder="08xxxxxxxxxx" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pilih Denom -->
+  <section class="p-6">
+    <h3 class="text-xl font-semibold mb-4">2. Pilih Jumlah CP</h3>
+    <div id="denomContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <!-- Metode Pembayaran -->
+  <section id="paymentSection" class="p-6 hidden">
+    <h3 class="text-xl font-semibold mb-4">3. Pilih Metode Pembayaran</h3>
+    <div id="paymentMethods" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"></div>
+    <div class="text-right">
+      <p class="mb-2">Total: <span id="totalPrice" class="font-bold text-green-400">-</span></p>
+      <button id="payButton" class="bg-blue-600 px-6 py-2 rounded hover:bg-blue-700">Bayar</button>
+    </div>
+  </section>
+
+  <!-- Notifikasi -->
+  <div id="notification" class="fixed top-10 right-10 bg-green-600 text-white px-4 py-2 rounded shadow hidden">
+    Top up sedang diproses...
+  </div>
+
+  <!-- Chat WhatsApp -->
+  <div class="fixed bottom-5 left-5">
+    <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-green-600 transition">
+      Ada Pertanyaan? Chat Di Sini
+    </a>
+  </div>
+
+  <!-- Script -->
+  <script>
+    let denomData = [];
+
+    fetch("codm.php")
+      .then(response => response.json())
+      .then(data => {
+        denomData = data;
+        renderDenoms();
+      })
+      .catch(error => {
+        console.error("Gagal mengambil data denom:", error);
+      });
+
+    const paymentMethods = ["GOPAY", "OVO", "DANA", "ShopeePay"];
+    let selectedDenom = null;
+    let selectedPayment = null;
+
+    function renderDenoms() {
+      const container = document.getElementById('denomContainer');
+      container.innerHTML = "";
+      denomData.forEach((denom) => {
+        const card = document.createElement('div');
+        card.className = "bg-gray-800 rounded-lg p-4 shadow-md cursor-pointer hover:ring-2 hover:ring-blue-400 transition";
+        card.innerHTML = `
+          <div class="flex items-center space-x-2 mb-2">
+            <img src="../assets/codm_cp.png" alt="CP" class="w-6 h-6" />
+            <p class="text-sm font-semibold">${denom.name} CP</p>
+          </div>
+          <p class="text-lg font-bold text-orange-300">IDR ${Number(denom.price).toLocaleString('id-ID')}</p>
+        `;
+        card.onclick = () => {
+          const userID = document.getElementById('userID').value.trim();
+          const serverID = document.getElementById('serverID').value.trim();
+          const waNumber = document.getElementById('waNumber').value.trim();
+          if (!userID || !serverID || !waNumber || !/^08\d{8,13}$/.test(waNumber)) {
+            alert("Silakan isi User ID, Server, dan Nomor WhatsApp yang valid terlebih dahulu.");
+            return;
+          }
+
+          selectedDenom = denom;
+          document.querySelectorAll('#denomContainer > div').forEach(d => d.classList.remove('ring-2', 'ring-blue-500'));
+          card.classList.add('ring-2', 'ring-blue-500');
+          document.getElementById('paymentSection').classList.remove('hidden');
+          document.getElementById('totalPrice').textContent = denom.price;
+          document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+        };
+        container.appendChild(card);
+      });
+    }
+
+    function renderPayments() {
+      const container = document.getElementById('paymentMethods');
+      container.innerHTML = "";
+      paymentMethods.forEach(method => {
+        const div = document.createElement('div');
+        div.className = "bg-gray-800 p-4 rounded cursor-pointer hover:ring-2 text-center";
+        div.textContent = method;
+        div.onclick = () => {
+          selectedPayment = method;
+          document.querySelectorAll('#paymentMethods > div').forEach(d => d.classList.remove('ring-2', 'ring-green-500'));
+          div.classList.add('ring-2', 'ring-green-500');
+        };
+        container.appendChild(div);
+      });
+    }
+
+    document.getElementById('payButton').onclick = () => {
+      const userID = document.getElementById('userID').value.trim();
+      const serverID = document.getElementById('serverID').value.trim();
+      const waNumber = document.getElementById('waNumber').value.trim();
+
+      if (!selectedDenom || !selectedPayment) {
+        alert("Pilih denom dan metode pembayaran terlebih dahulu.");
+        return;
+      }
+
+      if (!waNumber || !/^08\d{8,13}$/.test(waNumber)) {
+        alert("Masukkan nomor WhatsApp yang valid (format: 08xxxxxxxxxx).");
+        return;
+      }
+
+      function generateRandomTransactionID() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let id = '';
+        for (let i = 0; i < 7; i++) {
+          id += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return id;
+      }
+
+      const trxID = generateRandomTransactionID();
+      const gameName = "CallOfDutyMobile";
+      const detailURL = `payment.html?trx=${trxID}&user=${userID}&server=${serverID}&nick=-&wa=${waNumber}&denom=${encodeURIComponent(selectedDenom.name)}&price=${encodeURIComponent(selectedDenom.price)}&method=${selectedPayment}&game=${encodeURIComponent(gameName)}`;
+      window.location.href = detailURL;
+    };
+
+    renderDenoms();
+    renderPayments();
+  </script>
+</body>
+</html>
