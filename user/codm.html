@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top Up Genshin Impact - kemakiStore</title>
+  <title>Top Up Call of Duty: Mobile - kemakiStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white font-sans">
@@ -18,14 +18,14 @@
   </header>
 
   <!-- Banner -->
-  <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/banner_genshin.jpg');">
+  <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/banner_codm.jpg');">
     <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center px-6">
       <div class="relative flex items-center space-x-3 p-6 rounded-lg"
-        style="background-image: url('../assets/banner_genshin.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
-        <img src="../assets/logoGenshin.png" alt="Genshin Impact" class="w-12 h-12 rounded bg-white" />
+        style="background-image: url('../assets/backgroundcodm.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
+        <img src="../assets/logoCODM.jpg" alt="Call of Duty Mobile" class="w-12 h-12 rounded bg-white" />
         <div>
-          <h2 class="text-2xl font-bold text-white">Genshin Impact</h2>
-          <p class="text-sm text-white">HoYoverse</p>
+          <h2 class="text-2xl font-bold text-white">Call of Duty: Mobile</h2>
+          <p class="text-sm text-white">Garena / Activision</p>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
     <div class="bg-gray-800 p-4 rounded-lg">
       <h3 class="text-lg font-semibold mb-2">Informasi Game/Aplikasi</h3>
       <p class="text-sm text-gray-300">
-        Top Up <strong>Genshin Impact</strong> Aman dan Terpercaya - Cepat, Murah, dan Resmi!
+        Top Up <strong>CODM</strong> Cepat & Terpercaya – Harga Terbaik, CP Langsung Masuk ke Akun!
       </p>
       <p class="text-sm text-gray-400 mt-2">
         Mendukung pembayaran GOPAY, OVO, DANA, ShopeePay.
@@ -60,7 +60,7 @@
 
   <!-- Pilih Denom -->
   <section class="p-6">
-    <h3 class="text-xl font-semibold mb-4">2. Pilih Jumlah Genesis Crystal</h3>
+    <h3 class="text-xl font-semibold mb-4">2. Pilih Jumlah CP</h3>
     <div id="denomContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
   </section>
 
@@ -90,7 +90,7 @@
   <script>
     let denomData = [];
 
-    fetch("genshinimpact.php")
+    fetch("codm.php")
       .then(response => response.json())
       .then(data => {
         denomData = data;
@@ -112,8 +112,8 @@
         card.className = "bg-gray-800 rounded-lg p-4 shadow-md cursor-pointer hover:ring-2 hover:ring-blue-400 transition";
         card.innerHTML = `
           <div class="flex items-center space-x-2 mb-2">
-            <img src="../assets/genesis_crystal.png" alt="Genesis Crystal" class="w-6 h-6" />
-            <p class="text-sm font-semibold">${denom.name} Crystals</p>
+            <img src="../assets/codm_cp.png" alt="CP" class="w-6 h-6" />
+            <p class="text-sm font-semibold">${denom.name} CP</p>
           </div>
           <p class="text-lg font-bold text-orange-300">IDR ${Number(denom.price).toLocaleString('id-ID')}</p>
         `;
@@ -178,7 +178,7 @@
       }
 
       const trxID = generateRandomTransactionID();
-      const gameName = "GenshinImpact";
+      const gameName = "CallOfDutyMobile";
       const detailURL = `payment.html?trx=${trxID}&user=${userID}&server=${serverID}&nick=-&wa=${waNumber}&denom=${encodeURIComponent(selectedDenom.name)}&price=${encodeURIComponent(selectedDenom.price)}&method=${selectedPayment}&game=${encodeURIComponent(gameName)}`;
       window.location.href = detailURL;
     };

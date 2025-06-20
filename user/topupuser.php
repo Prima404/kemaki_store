@@ -95,6 +95,22 @@
         </a>
       </div>
 
+      <!-- Genshin Impact -->
+      <div>
+        <a href="genshinimpact.html" class="hover:text-yellow-400">
+          <img src="../assets/logoGenshinImpact.png" alt="Genshin Impact" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Genshin Impact</span>
+        </a>
+      </div>
+
+      <!-- CODM -->
+      <div>
+        <a href="codm.html" class="hover:text-yellow-400">
+          <img src="../assets/logoCODM.jpg" alt="Call of Duty Mobile" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Call of Duty Mobile</span>
+        </a>
+      </div>
+
     </div>
   </main>
 
