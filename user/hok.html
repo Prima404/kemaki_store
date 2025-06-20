@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top Up Call of Duty: Mobile - kemakiStore</title>
+  <title>Top Up PUBG Mobile - kemakiStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white font-sans">
@@ -18,14 +18,14 @@
   </header>
 
   <!-- Banner -->
-  <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/banner_codm.jpg');">
+  <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/banner_game_pubg.jpg');">
     <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center px-6">
       <div class="relative flex items-center space-x-3 p-6 rounded-lg"
-        style="background-image: url('../assets/backgroundcodm.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
-        <img src="../assets/logoCODM.jpg" alt="Call of Duty Mobile" class="w-12 h-12 rounded bg-white" />
+        style="background-image: url('../assets/banner_game_pubg.jpg'); background-size: cover; background-position: center;  background-repeat: no-repeat; min-height: 250px">
+        <img src="../assets/logoPUBG.png" alt="PUBG" class="w-12 h-12 rounded bg-white" />
         <div>
-          <h2 class="text-2xl font-bold text-white">Call of Duty: Mobile</h2>
-          <p class="text-sm text-white">Garena / Activision</p>
+          <h2 class="text-2xl font-bold text-white">PUBG Mobile</h2>
+          <p class="text-sm text-white">Tencent Games</p>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
     <div class="bg-gray-800 p-4 rounded-lg">
       <h3 class="text-lg font-semibold mb-2">Informasi Game/Aplikasi</h3>
       <p class="text-sm text-gray-300">
-        Top Up <strong>CODM</strong> Cepat & Terpercaya – Harga Terbaik, CP Langsung Masuk ke Akun!
+        Top Up <strong>PUBG Mobile</strong> Cepat & Aman – Langsung Masuk, Tanpa Ribet!
       </p>
       <p class="text-sm text-gray-400 mt-2">
         Mendukung pembayaran GOPAY, OVO, DANA, ShopeePay.
@@ -44,24 +44,24 @@
     </div>
 
     <!-- Kolom Kanan: Form Input -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2">1. MASUKKAN ID, SERVER, NICKNAME, DAN NOMOR WHATSAPP</h3>
-      <div class="flex flex-col space-y-2">
-        <div class="flex space-x-2">
-          <input type="text" id="userID" placeholder="User ID" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
-          <input type="hidden" id="serverID" value="-" />
-        </div>
-        <div class="flex space-x-2">
-          <input type="text" id="nickname" placeholder="Nickname" class="w-1/2 px-3 py-2 rounded bg-gray-700 text-white" />
-          <input type="text" id="waNumber" placeholder="08xxxxxxxxxx" class="w-1/2 px-3 py-2 rounded bg-gray-700 text-white" />
-        </div>
+  <div>
+    <h3 class="text-lg font-semibold mb-2">1. MASUKKAN ID, SERVER, NICKNAME, DAN NOMOR WHATSAPP</h3>
+    <div class="flex flex-col space-y-2">
+      <div class="flex space-x-2">
+        <input type="text" id="userID" placeholder="User ID" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+        <input type="hidden" id="serverID" value="-" />
+      </div>
+      <div class="flex space-x-2">
+        <input type="text" id="nickname" placeholder="Nickname" class="w-1/2 px-3 py-2 rounded bg-gray-700 text-white" />
+        <input type="text" id="waNumber" placeholder="08xxxxxxxxxx" class="w-1/2 px-3 py-2 rounded bg-gray-700 text-white" />
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Pilih Denom -->
   <section class="p-6">
-    <h3 class="text-xl font-semibold mb-4">2. Pilih Jumlah CP</h3>
+    <h3 class="text-xl font-semibold mb-4">2. Pilih Jumlah UC</h3>
     <div id="denomContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
   </section>
 
@@ -91,7 +91,7 @@
   <script>
     let denomData = [];
 
-    fetch("codm.php")
+    fetch("pubgm.php")
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -115,7 +115,7 @@
         card.innerHTML = `
           <div class="flex items-center space-x-2 mb-2">
             <img src="../assets/ucpubgm.png" alt="diamond" class="w-6 h-6" />
-            <p class="text-sm font-semibold">${denom.name} CP</p>
+            <p class="text-sm font-semibold">${denom.name} UC</p>
           </div>
           <p class="text-lg font-bold text-orange-300">IDR ${Number(denom.price).toLocaleString('id-ID')}</p>
         `;
@@ -179,7 +179,7 @@
       const userID = document.getElementById('userID').value.trim();
       const serverID = document.getElementById('serverID').value.trim();
       const nickname = document.getElementById('nickname').value.trim();
-      const gameName = "Call of Duty Mobile";
+      const gameName = "PUBG Mobile";
 
       const detailURL = `payment.html?trx=${trxID}&user=${userID}&server=${serverID}&nick=${nickname}&wa=${waNumber}&denom=${encodeURIComponent(selectedDenom.name)}&price=${encodeURIComponent(selectedDenom.price)}&method=${selectedPayment}&game=${encodeURIComponent(gameName)}`;
       window.location.href = detailURL;

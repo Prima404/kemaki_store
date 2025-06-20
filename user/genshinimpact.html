@@ -45,14 +45,15 @@
 
     <!-- Kolom Kanan: Form Input -->
     <div>
-      <h3 class="text-lg font-semibold mb-2">1. MASUKKAN ID, SERVER, DAN NOMOR WHATSAPP</h3>
+      <h3 class="text-lg font-semibold mb-2">1. MASUKKAN ID, SERVER, NICKNAME, DAN NOMOR WHATSAPP</h3>
       <div class="flex flex-col space-y-2">
         <div class="flex space-x-2">
           <input type="text" id="userID" placeholder="User ID" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
-          <input type="text" id="serverID" placeholder="Server" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+          <input type="hidden" id="serverID" value="-" />
         </div>
-        <div>
-          <input type="text" id="waNumber" placeholder="08xxxxxxxxxx" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+        <div class="flex space-x-2">
+          <input type="text" id="nickname" placeholder="Nickname" class="w-1/2 px-3 py-2 rounded bg-gray-700 text-white" />
+          <input type="text" id="waNumber" placeholder="08xxxxxxxxxx" class="w-1/2 px-3 py-2 rounded bg-gray-700 text-white" />
         </div>
       </div>
     </div>
@@ -93,11 +94,12 @@
     fetch("genshinimpact.php")
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         denomData = data;
         renderDenoms();
       })
-      .catch(error => {
-        console.error("Gagal mengambil data denom:", error);
+        .catch(error => {
+          console.error("Gagal mengambil data denom:", error);
       });
 
     const paymentMethods = ["GOPAY", "OVO", "DANA", "ShopeePay"];
@@ -107,22 +109,22 @@
     function renderDenoms() {
       const container = document.getElementById('denomContainer');
       container.innerHTML = "";
-      denomData.forEach((denom) => {
+      denomData.forEach((denom, index) => {
         const card = document.createElement('div');
         card.className = "bg-gray-800 rounded-lg p-4 shadow-md cursor-pointer hover:ring-2 hover:ring-blue-400 transition";
         card.innerHTML = `
           <div class="flex items-center space-x-2 mb-2">
-            <img src="../assets/genesis_crystal.png" alt="Genesis Crystal" class="w-6 h-6" />
-            <p class="text-sm font-semibold">${denom.name} Crystals</p>
+            <img src="../assets/ucpubgm.png" alt="diamond" class="w-6 h-6" />
+            <p class="text-sm font-semibold">${denom.name} GC</p>
           </div>
           <p class="text-lg font-bold text-orange-300">IDR ${Number(denom.price).toLocaleString('id-ID')}</p>
         `;
         card.onclick = () => {
           const userID = document.getElementById('userID').value.trim();
-          const serverID = document.getElementById('serverID').value.trim();
+          const nickname = document.getElementById('nickname').value.trim();
           const waNumber = document.getElementById('waNumber').value.trim();
-          if (!userID || !serverID || !waNumber || !/^08\d{8,13}$/.test(waNumber)) {
-            alert("Silakan isi User ID, Server, dan Nomor WhatsApp yang valid terlebih dahulu.");
+          if (!userID || !nickname || !waNumber || !/^08\d{8,13}$/.test(waNumber)) {
+            alert("Silakan isi User ID, Server ID, Nickname, dan Nomor WhatsApp yang valid terlebih dahulu.");
             return;
           }
 
@@ -154,15 +156,11 @@
     }
 
     document.getElementById('payButton').onclick = () => {
-      const userID = document.getElementById('userID').value.trim();
-      const serverID = document.getElementById('serverID').value.trim();
       const waNumber = document.getElementById('waNumber').value.trim();
-
       if (!selectedDenom || !selectedPayment) {
         alert("Pilih denom dan metode pembayaran terlebih dahulu.");
-        return;
-      }
-
+          return;
+        }
       if (!waNumber || !/^08\d{8,13}$/.test(waNumber)) {
         alert("Masukkan nomor WhatsApp yang valid (format: 08xxxxxxxxxx).");
         return;
@@ -178,8 +176,12 @@
       }
 
       const trxID = generateRandomTransactionID();
-      const gameName = "GenshinImpact";
-      const detailURL = `payment.html?trx=${trxID}&user=${userID}&server=${serverID}&nick=-&wa=${waNumber}&denom=${encodeURIComponent(selectedDenom.name)}&price=${encodeURIComponent(selectedDenom.price)}&method=${selectedPayment}&game=${encodeURIComponent(gameName)}`;
+      const userID = document.getElementById('userID').value.trim();
+      const serverID = document.getElementById('serverID').value.trim();
+      const nickname = document.getElementById('nickname').value.trim();
+      const gameName = "Genshin Impact";
+
+      const detailURL = `payment.html?trx=${trxID}&user=${userID}&server=${serverID}&nick=${nickname}&wa=${waNumber}&denom=${encodeURIComponent(selectedDenom.name)}&price=${encodeURIComponent(selectedDenom.price)}&method=${selectedPayment}&game=${encodeURIComponent(gameName)}`;
       window.location.href = detailURL;
     };
 
