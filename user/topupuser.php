@@ -111,6 +111,14 @@
         </a>
       </div>
 
+      <!-- HOK -->
+      <div>
+        <a href="hok.html" class="hover:text-yellow-400">
+          <img src="../assets/logohok.jpg" alt="Honor Of Kings" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Honor Of Kings</span>
+        </a>
+      </div>
+
     </div>
   </main>
 
