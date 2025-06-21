@@ -98,8 +98,27 @@ while ($row = $result->fetch_assoc()) {
           <span class="text-2xl font-bold block mt-4">FreeFire</span>
         </a>
       </div>
+      <div>
+        <a href="updatefreefire.html" class="hover:text-yellow-400">
+          <img src="../assets/logoEPEP.png" alt="Free Fire" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">FreeFire</span>
+        </a>
+      </div>
+      <div>
+        <a href="updatefreefire.html" class="hover:text-yellow-400">
+          <img src="../assets/logoEPEP.png" alt="Free Fire" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">FreeFire</span>
+        </a>
+      </div>
+      <div>
+        <a href="updatefreefire.html" class="hover:text-yellow-400">
+          <img src="../assets/logoEPEP.png" alt="Free Fire" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">FreeFire</span>
+        </a>
+      </div>
     </div>
   </main>
+
 
   <footer class="bg-gray-800 p-4 text-center text-sm mt-8">
     &copy; 2025 kemakiStore. All rights reserved.
