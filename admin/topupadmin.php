@@ -100,20 +100,38 @@ while ($row = $result->fetch_assoc()) {
       </div>
       <div>
         <a href="updatefreefire.html" class="hover:text-yellow-400">
-          <img src="../assets/logoEPEP.png" alt="Free Fire" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
-          <span class="text-2xl font-bold block mt-4">FreeFire</span>
+          <img src="../assets/logoGenshinImpact.png" alt="Genshin Impact" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Genshin Impact</span>
         </a>
       </div>
       <div>
         <a href="updatefreefire.html" class="hover:text-yellow-400">
-          <img src="../assets/logoEPEP.png" alt="Free Fire" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
-          <span class="text-2xl font-bold block mt-4">FreeFire</span>
+          <img src="../assets/logoCODM.jpg" alt="Call Of Duty Mobile" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Call Of Duty Mobile</span>
         </a>
       </div>
       <div>
         <a href="updatefreefire.html" class="hover:text-yellow-400">
-          <img src="../assets/logoEPEP.png" alt="Free Fire" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
-          <span class="text-2xl font-bold block mt-4">FreeFire</span>
+          <img src="../assets/logohok.jpg" alt="Honor Of Kings" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Honor Of Kings</span>
+        </a>
+      </div>
+      <div>
+        <a href="updatefreefire.html" class="hover:text-yellow-400">
+          <img src="../assets/logolol.jpg" alt="League Of Legends Wild Rift" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">League Of Legends Wild Rift</span>
+        </a>
+      </div>
+      <div>
+        <a href="updatefreefire.html" class="hover:text-yellow-400">
+          <img src="../assets/aovlogo.jpg" alt="Arena Of Vallor" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Arena Of Vallor</span>
+        </a>
+      </div>
+      <div>
+        <a href="updatefreefire.html" class="hover:text-yellow-400">
+          <img src="../assets/mcgglogo.png" alt="Magic Chess GO GO" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Magic Chess GO GO</span>
         </a>
       </div>
     </div>
