@@ -127,6 +127,22 @@
         </a>
       </div>
 
+      <!-- AOV -->
+      <div>
+        <a href="aov.html" class="hover:text-yellow-400">
+          <img src="../assets/aovlogo.jpg" alt="Arena Of Vallor" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Arena Of Vallor</span>
+        </a>
+      </div>
+
+      <!-- MCGG -->
+      <div>
+        <a href="mcgg.html" class="hover:text-yellow-400">
+          <img src="../assets/mcgglogo.png" alt="Magic Chess GO GO" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
+          <span class="text-2xl font-bold block mt-4">Magic Chess GO GO</span>
+        </a>
+      </div>
+
     </div>
   </main>
 
