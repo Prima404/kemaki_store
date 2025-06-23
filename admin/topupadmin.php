@@ -99,7 +99,7 @@ while ($row = $result->fetch_assoc()) {
         </a>
       </div>
       <div>
-        <a href="updatefreefire.html" class="hover:text-yellow-400">
+        <a href="updategenshin.html" class="hover:text-yellow-400">
           <img src="../assets/logoGenshinImpact.png" alt="Genshin Impact" class="w-40 h-40 mx-auto rounded-xl shadow-lg" />
           <span class="text-2xl font-bold block mt-4">Genshin Impact</span>
         </a>

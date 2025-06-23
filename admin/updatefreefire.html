@@ -85,7 +85,7 @@
     let selectedCard = null;
   
     function loadDenoms() {
-      fetch('update_freefire.php')  // mengambil data dari server
+      fetch('updatefreefire.php')  // mengambil data dari server
       .then(response => response.json())
       .then(denomData => {
         const grid = document.getElementById('diamond-grid');
@@ -138,7 +138,7 @@
 
       // Tambah Denom
       if (!selectedCard && newLabel && newPrice) {
-        fetch('update_freefire.php', {
+        fetch('updatefreefire.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `aksi=tambah&label_baru=${encodeURIComponent(newLabel)}&harga=${encodeURIComponent(newPrice)}`
@@ -164,7 +164,7 @@
       const oldLabel = selectedCard?.querySelector("h3").innerText.replace(" Diamonds", "").trim();
 
       if (selectedCard && newLabel && newPrice) {
-        fetch('update_freefire.php', {
+        fetch('updatefreefire.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `label_lama=${encodeURIComponent(oldLabel)}&label_baru=${encodeURIComponent(newLabel)}&harga=${encodeURIComponent(newPrice)}`
@@ -214,7 +214,7 @@
       const label = document.getElementById("label-input").value.trim();
 
       if (confirm(`Hapus denom "${label}"?`)) {
-        fetch('update_freefire.php', {
+        fetch('updatefreefire.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `hapus=1&label=${encodeURIComponent(label)}`
