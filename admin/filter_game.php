@@ -4,27 +4,31 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
+$notif = false; // buat flag notifikasi
+
 // Saat disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selected = isset($_POST['tampil']) ? $_POST['tampil'] : [];
 
-    // Reset semua tampil = 0
+    // Reset tampil semua jadi 0
     $conn->query("UPDATE semua_game_admin SET tampil = 0");
     $conn->query("UPDATE semua_game SET tampil = 0");
 
-    // Tampilkan hanya yg dicentang
+    // Centang yang dipilih
     foreach ($selected as $id) {
-        // Update di semua_game_admin
+        // Update tampil di admin
         $conn->query("UPDATE semua_game_admin SET tampil = 1 WHERE id = $id");
 
-        // Ambil data dari admin table
+        // Ambil nama game dari admin
         $result = $conn->query("SELECT nama_game FROM semua_game_admin WHERE id = $id");
-        $row = $result->fetch_assoc();
-        $nama_game = $row['nama_game'];
-
-        // Update di semua_game berdasarkan nama_game yang sama
-        $conn->query("UPDATE semua_game SET tampil = 1 WHERE nama_game = '$nama_game'");
+        if ($row = $result->fetch_assoc()) {
+            $nama_game = $row['nama_game'];
+            // Update tampil di user berdasarkan nama_game
+            $conn->query("UPDATE semua_game SET tampil = 1 WHERE nama_game = '$nama_game'");
+        }
     }
+
+    $notif = true; // set notifikasi ON
 }
 ?>
 
@@ -37,12 +41,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="bg-gray-900 text-white p-8 font-sans">
 
+  <!-- Tombol Kembali -->
   <div class="mb-6 text-center">
     <a href="topupadmin.php" class="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white inline-block">🔙 Kembali ke Halaman Admin</a>
   </div>
 
+  <!-- Notifikasi -->
+  <?php if ($notif): ?>
+    <div class="max-w-2xl mx-auto bg-green-600 text-white p-4 rounded-xl mb-6 text-center font-semibold shadow-lg">
+      ✅ Perubahan berhasil disimpan!
+    </div>
+  <?php endif; ?>
+
   <h1 class="text-3xl font-bold mb-6 text-center">🎮 Pilih Game yang Ditampilkan</h1>
 
+  <!-- Form Game -->
   <form method="POST">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
       <?php
