@@ -1,9 +1,5 @@
 <?php
-// Koneksi database
-$conn = new mysqli("localhost", "root", "", "kemaki_store");
-if ($conn->connect_error) {
-  die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 $sql = "SELECT * FROM transaksi ORDER BY waktu DESC";
 $result = $conn->query($sql);

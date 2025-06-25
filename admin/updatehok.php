@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 require 'koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $sql = "SELECT jumlah_dm, harga FROM dm_genshin ORDER BY harga ASC";
+    $sql = "SELECT jumlah_dm, harga FROM dm_hok ORDER BY harga ASC";
     $result = $conn->query($sql);
 
     $denoms = [];
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $sql = "DELETE FROM dm_genshin WHERE jumlah_dm = '$label'";
+        $sql = "DELETE FROM dm_hok WHERE jumlah_dm = '$label'";
         $result = mysqli_query($conn, $sql);
 
         echo json_encode(['success' => $result ? true : false, 'message' => $result ? '' : 'Gagal menghapus data.']);
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $sql = "INSERT INTO dm_genshin (jumlah_dm, harga) VALUES ('$label_baru', '$harga')";
+        $sql = "INSERT INTO dm_hok (jumlah_dm, harga) VALUES ('$label_baru', '$harga')";
         $result = mysqli_query($conn, $sql);
 
         echo json_encode(['success' => $result ? true : false, 'message' => $result ? '' : 'Gagal menambahkan ke database.']);
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $sql = "UPDATE dm_genshin SET jumlah_dm = '$label_baru', harga = '$harga' WHERE jumlah_dm = '$label_lama'";
+    $sql = "UPDATE dm_hok SET jumlah_dm = '$label_baru', harga = '$harga' WHERE jumlah_dm = '$label_lama'";
     $result = mysqli_query($conn, $sql);
 
     echo json_encode(['success' => $result ? true : false, 'message' => $result ? '' : 'Gagal update ke database.']);

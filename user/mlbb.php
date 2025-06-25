@@ -1,14 +1,5 @@
 <?php
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$database = 'kemaki_store';
-
-$conn = new mysqli($host, $user, $password, $database);
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 // Ambil data dari tabel
 $sql = "SELECT jumlah_dm, harga FROM dm_mlbb ORDER BY harga ASC";

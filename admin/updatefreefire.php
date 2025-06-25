@@ -1,16 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "kemaki_store";
-
-$conn = mysqli_connect($host, $user, $pass, $db);
-if (!$conn) {
-    echo json_encode(['success' => false, 'message' => 'Koneksi gagal']);
-    exit;
-}
+require 'koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $sql = "SELECT jumlah_dm, harga FROM dm_freefire ORDER BY harga ASC";

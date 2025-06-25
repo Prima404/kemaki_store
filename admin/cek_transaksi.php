@@ -1,9 +1,5 @@
 <?php
-// Koneksi database
-$conn = new mysqli("localhost", "root", "", "kemaki_store");
-if ($conn->connect_error) {
-  die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 // Handle update status
 if (isset($_POST['update_status'])) {

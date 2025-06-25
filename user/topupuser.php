@@ -1,8 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "kemaki_store");
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 // Ambil banner
 $result = $conn->query("SELECT filename FROM banners ORDER BY uploaded_at DESC");

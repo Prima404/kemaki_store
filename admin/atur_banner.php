@@ -1,9 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "kemaki_store");
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 // === PROSES UPLOAD BANNER BARU ===
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["banner"])) {

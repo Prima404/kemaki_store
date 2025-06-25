@@ -1,13 +1,5 @@
 <?php
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$database = 'kemaki_store';
-
-$conn = new mysqli($host, $user, $password, $database);
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 $trx_id     = $_POST['trx'];
 $denom      = $_POST['denom'];

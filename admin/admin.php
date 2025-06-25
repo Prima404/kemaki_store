@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "root", "", "kemaki_store");
+require 'koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
