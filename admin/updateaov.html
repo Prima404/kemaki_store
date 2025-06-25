@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kemakiStore - Admin Honor Of Kings</title>
+  <title>kemakiStore - Admin Arena Of Vallor</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white">
@@ -25,14 +25,14 @@
   <!-- Konten utama -->
   <div class="p-6">
     <!-- Banner -->
-    <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/hokbanner.jpg');">
+    <section class="relative bg-cover bg-center min-h-[250px]" style="background-image: url('../assets/aovbanner.jpg');">
       <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center px-6">
         <div class="relative flex items-center space-x-3 p-6 rounded-lg"
-          style="background-image: url('../assets/hokbanner.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
-          <img src="../assets/logohok.jpg" alt="HOK" class="w-12 h-12 rounded bg-white" />
+          style="background-image: url('../assets/aovbanner.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 250px;">
+          <img src="../assets/aovlogo.jpg" alt="AOV" class="w-12 h-12 rounded bg-white" />
           <div>
-            <h2 class="text-2xl font-bold text-white">Honor Of Kings</h2>
-            <p class="text-sm text-white">Level Infinite</p>
+            <h2 class="text-2xl font-bold text-white">Arena Of Vallor</h2>
+            <p class="text-sm text-white">Garena</p>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
     <!-- Informasi -->
     <div class="bg-gray-800 p-4 rounded-xl mb-6">
       <h2 class="text-xl font-semibold mb-2">Informasi Game/Aplikasi</h2>
-      <p>Top Up <strong>Honor Of Kings</strong> Super Cepat – Langsung Masuk, Siap Booyah!</p>
+      <p>Top Up <strong>Arena Of Vallor</strong> Super Cepat – Langsung Masuk, Siap Booyah!</p>
       <p class="text-sm text-gray-400 mt-2">Mendukung pembayaran GOPAY, OVO, DANA, ShopeePay, BCA, Mandiri, dll.</p>
     </div>
 
@@ -85,7 +85,7 @@
     let selectedCard = null;
   
     function loadDenoms() {
-      fetch('updatehok.php')  // mengambil data dari server
+      fetch('updateaov.php')  // mengambil data dari server
       .then(response => response.json())
       .then(denomData => {
         const grid = document.getElementById('diamond-grid');
@@ -97,8 +97,8 @@
           div.onclick = () => editDenom(div, d.label);
           div.innerHTML = `
             <div class="flex items-center gap-2">
-              <img src="../assets/coinhok.png" alt="Diamond" class="w-5 h-5">
-              <h3 class="font-bold">${d.label} Tokens</h3>
+              <img src="../assets/coinaov.png" alt="Diamond" class="w-5 h-5">
+              <h3 class="font-bold">${d.label} Vouchers</h3>
             </div>
             <p class="text-sm text-orange-400 font-semibold" data-price>IDR ${Number(d.price).toLocaleString('id-ID')}</p>
           `;
@@ -138,7 +138,7 @@
 
       // Tambah Denom
       if (!selectedCard && newLabel && newPrice) {
-        fetch('updatehok.php', {
+        fetch('updateaov.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `aksi=tambah&label_baru=${encodeURIComponent(newLabel)}&harga=${encodeURIComponent(newPrice)}`
@@ -161,10 +161,10 @@
       }
 
       // Edit Denom
-      const oldLabel = selectedCard?.querySelector("h3").innerText.replace(" Tokens", "").trim();
+      const oldLabel = selectedCard?.querySelector("h3").innerText.replace(" Vouchers", "").trim();
 
       if (selectedCard && newLabel && newPrice) {
-        fetch('updatehok.php', {
+        fetch('updateaov.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `label_lama=${encodeURIComponent(oldLabel)}&label_baru=${encodeURIComponent(newLabel)}&harga=${encodeURIComponent(newPrice)}`
@@ -214,7 +214,7 @@
       const label = document.getElementById("label-input").value.trim();
 
       if (confirm(`Hapus denom "${label}"?`)) {
-        fetch('updatehok.php', {
+        fetch('updateaov.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `hapus=1&label=${encodeURIComponent(label)}`
