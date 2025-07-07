@@ -21,7 +21,7 @@ while ($row = $result->fetch_assoc()) {
   <!-- Navbar -->
   <header class="bg-gray-800 p-4 flex justify-between items-center">
     <div class="flex items-center">
-      <a href="../admin/admin.html">
+      <a href="../user/topupuser.php">
         <img src="../assets/logokemakistore.png" alt="kemakiStore Logo" class="h-14 w-auto" />
       </a>
     </div>
